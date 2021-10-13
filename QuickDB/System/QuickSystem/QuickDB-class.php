@@ -1,8 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../QuickConnect-class/QuickConnect-class.php';
-require_once __DIR__ . '/QuickUsers-class.php';
-
 /**
  * @author Jakub Szymański <jakub-szymanski@outlook.com>
  * @package QuickDB
@@ -15,6 +12,9 @@ class QuickDB extends QuickGlobal {
 
 	public static function init() {
 
+		self::$Connect = new QuickConnect();
+		self::$Users = new QuickUsers();
+		
 		self::read_config();
 
 		if ( !self::$Config ) {
@@ -25,13 +25,11 @@ class QuickDB extends QuickGlobal {
 		
 		self::show_gui();
 		
-		self::$Connect = new QuickConnect();
-		self::$Users = new QuickUsers();
 		echo 'Initialization... ' . PHP_EOL;
 
 		try {
 
-			// self::$Users->add('admin', 'Jd9$gdfgfkjn');
+			self::$Users->add('admin', 'Jd9$gdfgfkjn');
 
 		} catch (QuickException $e) {
 			echo $e->getMessage() . PHP_EOL;
