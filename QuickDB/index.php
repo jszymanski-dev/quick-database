@@ -1,7 +1,7 @@
 <?php
 // print_r($_SERVER);
 
-require_once 'System/QuickDB.php';
+require_once 'init.php';
 
 QuickDB::init();
 

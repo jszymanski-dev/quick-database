@@ -8,7 +8,7 @@ class QuickUsers extends QuickGlobal {
 
 		if ( !empty($this->Users) && !$forced ) return;
 		
-		$config = json_decode(file_get_contents(Q_ROOT_PATH . '/Data/QuickDB.config.json'), true);
+		$config = json_decode(file_get_contents(QUICK_ROOTH_PATH . '/Data/QuickDB.config.json'), true);
 		
 		$this->Users = $config['users'];
 		
@@ -16,9 +16,9 @@ class QuickUsers extends QuickGlobal {
 
 	private function save() {
 
-		$config = json_decode(file_get_contents(Q_ROOT_PATH . '/Data/QuickDB.config.json'), true);
+		$config = json_decode(file_get_contents(QUICK_ROOTH_PATH . '/Data/QuickDB.config.json'), true);
 		$config['users'] = $this->Users;
-		file_put_contents(Q_ROOT_PATH . '/Data/QuickDB.config.json', json_encode($config));
+		file_put_contents(QUICK_ROOTH_PATH . '/Data/QuickDB.config.json', json_encode($config));
 		$this->Users = [];
 		
 	}
@@ -42,8 +42,8 @@ class QuickUsers extends QuickGlobal {
 			return false;
 		}
 
-		if ( !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*['.Q_SPECIAL_CHARACTERS.'])[A-Za-z\d'.Q_SPECIAL_CHARACTERS.']{8,}$/', $password) ) {
-			$this->error("Invalid password. Password must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (from the following: ".Q_SPECIAL_CHARACTERS.").");
+		if ( !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*['.self::$SpecialCharacters.'])[A-Za-z\d'.self::$SpecialCharacters.']{8,}$/', $password) ) {
+			$this->error("Invalid password. Password must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (from the following: ".self::$SpecialCharacters.").");
 			return false;
 		}
 		
@@ -55,7 +55,8 @@ class QuickUsers extends QuickGlobal {
 		$new_user = [
 			'usr' => $username,
 			'pwd' => md5($password),
-			'per' => [],
+			'prm' => [],
+			'tkn' => [],
 		];
 
 		$this->Users[] = $new_user;
@@ -91,8 +92,8 @@ class QuickUsers extends QuickGlobal {
 
 		if ( !$this->check($username, $password) ) return false;
 
-		if ( !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*['.Q_SPECIAL_CHARACTERS.'])[A-Za-z\d'.Q_SPECIAL_CHARACTERS.']{8,}$/', $new_password) ) {
-			$this->error("New password is invalid. Password must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (from the following: ".Q_SPECIAL_CHARACTERS.").");
+		if ( !preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*['.self::$SpecialCharacters.'])[A-Za-z\d'.self::$SpecialCharacters.']{8,}$/', $new_password) ) {
+			$this->error("New password is invalid. Password must contain minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character (from the following: ".self::$SpecialCharacters.").");
 			return false;
 		}
 

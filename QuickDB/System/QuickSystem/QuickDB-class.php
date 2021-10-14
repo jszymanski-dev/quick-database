@@ -9,9 +9,11 @@ class QuickDB extends QuickGlobal {
 	private static $Connect;
 	private static $Users;
 	private static $Config;
+	private static $Path = '/quickdb';
 
-	public static function init() {
+	public static function init( string $path = '' ) {
 
+		self::$Path = $path === '' ? self::$Path : strtolower($path);
 		self::$Connect = new QuickConnect();
 		self::$Users = new QuickUsers();
 		
@@ -29,7 +31,7 @@ class QuickDB extends QuickGlobal {
 
 		try {
 
-			self::$Users->add('admin', 'Jd9$gdfgfkjn');
+			// self::$Users->add('admin', 'Jd9$gdfgfkjn');
 
 		} catch (QuickException $e) {
 			echo $e->getMessage() . PHP_EOL;
@@ -41,10 +43,13 @@ class QuickDB extends QuickGlobal {
 
 	private static function show_gui() {
 
-		$path = '/quickdb';
 		$uri  = strtolower($_SERVER['REQUEST_URI']);
+
+		if ( strpos($uri, self::$Path) !== 0 ) return false;
 		
-		$uri_array = explode('/', str_replace($path, '', $uri));
+		$new_uri = substr_replace($uri, '', 0, strlen(self::$Path));
+		
+		$uri_array = explode('/', $new_uri);
 		
 		if ( isset($uri_array[1]) && strtolower($uri_array[1]) == 'gui' ) {
 
@@ -66,11 +71,11 @@ class QuickDB extends QuickGlobal {
 	}
 
 	private static function read_config() {
-		self::$Config = json_decode(file_get_contents(Q_ROOT_PATH . '/Data/QuickDB.config.json'), true);
+		self::$Config = json_decode(file_get_contents(QUICK_ROOTH_PATH . '/Data/QuickDB.config.json'), true);
 	}
 
 	private static function save_config() {
-		file_put_contents(Q_ROOT_PATH . '/Data/QuickDB.config.json', json_encode(self::$Config));
+		file_put_contents(QUICK_ROOTH_PATH . '/Data/QuickDB.config.json', json_encode(self::$Config));
 	}
 
 }

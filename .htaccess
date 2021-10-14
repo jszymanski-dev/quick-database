@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
-RewriteEngine on
-RewriteBase /quickdb/
+RewriteEngine On
+RewriteBase /
 
 # redirect without www
 # RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
@@ -10,10 +10,12 @@ RewriteBase /quickdb/
 # RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
 
 Options +FollowSymLinks
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
+RewriteRule ^d(/.*)?$ custom_url_to_qdb/index.php [NC,L]
 RewriteRule ^.*$ index.php [NC,L]
 
 # ErrorDocument 403 /403.php
